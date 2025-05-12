@@ -54,6 +54,7 @@ void	ft_sleep(long time)
 	long	start;
 	long	remaining;
 	long	current;
+	long	sleep_time;
 
 	start = get_time();
 	while (1)
@@ -64,6 +65,9 @@ void	ft_sleep(long time)
 		remaining = time - (current - start);
 		if (remaining < 2)
 			continue ;
-		usleep((remaining > 10 ? remaining - 10 : remaining) * 800);
+		sleep_time = remaining;
+		if (remaining > 10)
+			sleep_time = remaining - 10;
+		usleep(sleep_time * 800);
 	}
 }

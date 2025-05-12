@@ -2,23 +2,25 @@
 
 #include "../inc/philo.h"
 
-static int	philo_eat(t_thread *thread)
+static void	set_fork_order(t_thread *thread, int *right_fork, int *left_fork)
 {
-	t_data	*data;
-	int		right_fork;
-	int		left_fork;
-
-	data = thread->data;
 	if (thread->id % 2 == 0)
 	{
-		right_fork = thread->right_fork;
-		left_fork = thread->left_fork;
+		*right_fork = thread->right_fork;
+		*left_fork = thread->left_fork;
 	}
 	else
 	{
-		left_fork = thread->left_fork;
-		right_fork = thread->right_fork;
+		*left_fork = thread->left_fork;
+		*right_fork = thread->right_fork;
 	}
+}
+
+static int	take_forks(t_thread *thread, int right_fork, int left_fork)
+{
+	t_data	*data;
+
+	data = thread->data;
 	if (is_finish(thread))
 		return (1);
 	pthread_mutex_lock(&data->forks[right_fork].mutex);
@@ -27,6 +29,19 @@ static int	philo_eat(t_thread *thread)
 		return (handle_single_philo(data, right_fork));
 	pthread_mutex_lock(&data->forks[left_fork].mutex);
 	print_state(data, thread->id, "has taken a fork");
+	return (0);
+}
+
+static int	philo_eat(t_thread *thread)
+{
+	t_data	*data;
+	int		right_fork;
+	int		left_fork;
+
+	data = thread->data;
+	set_fork_order(thread, &right_fork, &left_fork);
+	if (take_forks(thread, right_fork, left_fork))
+		return (1);
 	if (is_finish(thread))
 	{
 		release_forks(data, right_fork, left_fork);

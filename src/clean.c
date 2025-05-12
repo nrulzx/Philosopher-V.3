@@ -61,3 +61,23 @@ void	cleanup(t_data *data, t_thread *thread)
 	if (data->threads)
 		free(data->threads);
 }
+
+int	check_all_ate(t_data *data)
+{
+	int	i;
+	int	finished;
+
+	if (data->must_eat < 0)
+		return (0);
+	i = 0;
+	finished = 0;
+	while (i < data->philo_num)
+	{
+		pthread_mutex_lock(&data->meal_mutex);
+		if (data->threads[i].meals_count >= data->must_eat)
+			finished++;
+		pthread_mutex_unlock(&data->meal_mutex);
+		i++;
+	}
+	return (finished == data->philo_num);
+}

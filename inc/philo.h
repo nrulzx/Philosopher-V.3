@@ -57,6 +57,7 @@ int					print_error(char *msg);
 int					free_error(t_data *data, char *msg);
 void				print_state(t_data *data, int id, char *state);
 void				cleanup(t_data *data, t_thread *thread);
+int					check_all_ate(t_data *data);
 
 /* ========================= init_data.c ======================== */
 int					check_args(int ac, char **av);
@@ -74,7 +75,8 @@ void				join_threads(t_data *data);
 
 /* ========================== start_process.c ========================== */
 int					check_died(t_thread *thread, int time_to_die);
-int					check_all_ate(t_data *data);
+int					check_philosopher_death(t_data *data, int i);
+int					check_meal_completion(t_data *data);
 void				*monitor_process(void *arg);
 int					start_process(t_data *data);
 
