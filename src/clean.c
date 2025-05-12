@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   clean.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: flash19 <flash19@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/01 00:00:00 by flash19           #+#    #+#             */
-/*   Updated: 2023/01/01 00:00:00 by flash19          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/* ================================= CLEAN ================================== */
 
 #include "../inc/philo.h"
 
@@ -39,6 +29,18 @@ void	print_state(t_data *data, int id, char *state)
 	pthread_mutex_unlock(&data->print_mutex);
 }
 
+static void	join_threads(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->philo_num)
+	{
+		pthread_join(data->threads[i].thread, NULL);
+		i++;
+	}
+}
+
 void	cleanup(t_data *data, t_thread *thread)
 {
 	int	i;
@@ -60,24 +62,4 @@ void	cleanup(t_data *data, t_thread *thread)
 	pthread_mutex_destroy(&data->meal_mutex);
 	if (data->threads)
 		free(data->threads);
-}
-
-int	check_all_ate(t_data *data)
-{
-	int	i;
-	int	finished;
-
-	if (data->must_eat < 0)
-		return (0);
-	i = 0;
-	finished = 0;
-	while (i < data->philo_num)
-	{
-		pthread_mutex_lock(&data->meal_mutex);
-		if (data->threads[i].meals_count >= data->must_eat)
-			finished++;
-		pthread_mutex_unlock(&data->meal_mutex);
-		i++;
-	}
-	return (finished == data->philo_num);
 }

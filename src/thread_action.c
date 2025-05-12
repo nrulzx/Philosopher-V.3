@@ -2,34 +2,18 @@
 
 #include "../inc/philo.h"
 
-static void	set_fork_order(t_thread *thread, int *right_fork, int *left_fork)
-{
-	if (thread->id % 2 == 0)
-	{
-		*right_fork = thread->right_fork;
-		*left_fork = thread->left_fork;
-	}
-	else
-	{
-		*left_fork = thread->left_fork;
-		*right_fork = thread->right_fork;
-	}
-}
-
-static int	take_forks(t_thread *thread, int right_fork, int left_fork)
+int	is_finish(t_thread *thread)
 {
 	t_data	*data;
+	int		result;
 
 	data = thread->data;
-	if (is_finish(thread))
-		return (1);
-	pthread_mutex_lock(&data->forks[right_fork].mutex);
-	print_state(data, thread->id, "has taken a fork");
-	if (data->philo_num == 1)
-		return (handle_single_philo(data, right_fork));
-	pthread_mutex_lock(&data->forks[left_fork].mutex);
-	print_state(data, thread->id, "has taken a fork");
-	return (0);
+	result = 0;
+	pthread_mutex_lock(&data->death_mutex);
+	if (data->someone_died || data->all_ate)
+		result = 1;
+	pthread_mutex_unlock(&data->death_mutex);
+	return (result);
 }
 
 static int	philo_eat(t_thread *thread)

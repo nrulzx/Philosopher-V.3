@@ -121,8 +121,6 @@ t_data	init_data(t_data *data, int ac, char **av)
 	}
 	data->threads = init_thread(data);
 	if (!data->threads)
-	{
 		cleanup_init_failure(data);
-	}
 	return (*data);
 }
