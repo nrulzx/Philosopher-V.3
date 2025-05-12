@@ -39,7 +39,7 @@ static int	philo_eat(t_thread *thread)
 	return (0);
 }
 
-int	philo_action(t_thread *thread, t_state state)
+static int	philo_action(t_thread *thread, t_state state)
 {
 	t_data	*data;
 	int		think_time;

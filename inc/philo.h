@@ -52,39 +52,39 @@ typedef struct s_data
 	t_thread		*threads;
 }					t_data;
 
-/* ========================== clean.c ========================== */
+/* ============================= CLEAN ==================================== */
 int					print_error(char *msg);
 int					free_error(t_data *data, char *msg);
 void				print_state(t_data *data, int id, char *state);
 void				cleanup(t_data *data, t_thread *thread);
 
-/* ========================= init_data.c ======================== */
-int					check_args(int ac, char **av);
+/* ============================= INIT_DATA ================================= */
 int					init_args(t_data *data, int ac, char **av);
-t_data				init_data(t_data *data, int ac, char **av);
 t_forks				*init_forks(t_data *data);
 t_thread			*init_thread(t_data *data);
+t_data				init_data(t_data *data, int ac, char **av);
 
-/* ========================== thread_utils.c ========================== */
-void				update_meal_time(t_thread *thread);
-void				release_forks(t_data *data, int right_fork, int left_fork);
-void				set_fork_order(t_thread *thread, int *r_fork, int *l_fork);
-int					take_forks(t_thread *thread, int right_fork, int left_fork);
+/* ============================= START_PROCESS ============================= */
+int					start_process(t_data *data);
 
-/* ========================== start_process.c ========================== */
+/* ============================= THREAD_ACTION ============================= */
+int					is_finish(t_thread *thread);
+void				*thread_action(void *arg);
+
+/* ============================= THREAD_MONITOR ============================ */
 int					check_philosopher_death(t_data *data, int i);
 int					check_meal_completion(t_data *data);
 void				*monitor_process(void *arg);
-int					start_process(t_data *data);
 
-/* ========================== thread_action.c ========================== */
-int					is_finish(t_thread *thread);
-int					philo_action(t_thread *thread, t_state state);
-void				*thread_action(void *arg);
+/* ============================= THREAD_UTILS ============================== */
+void				set_fork_order(t_thread *thread, int *r_fork, int *l_fork);
+int					take_forks(t_thread *thread, int right_fork, int left_fork);
+void				release_forks(t_data *data, int right_fork, int left_fork);
+void				update_meal_time(t_thread *thread);
 
-/* ========================== utils.c ========================== */
-int					ft_atoi(const char *str);
+/* ============================== UTILS ==================================== */
 int					is_number(char *str);
+int					ft_atoi(const char *str);
 long				get_time(void);
 void				ft_sleep(long time);
 
