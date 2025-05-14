@@ -59,7 +59,7 @@ static int	philo_action(t_thread *thread, t_state state)
 		if (data->time_to_die > data->time_to_eat + data->time_to_sleep)
 			think_time = (data->time_to_die - data->time_to_eat
 					- data->time_to_sleep) / 2;
-		usleep(think_time * 1000);
+		usleep(think_time * 100);
 	}
 	if (is_finish(thread))
 		return (1);

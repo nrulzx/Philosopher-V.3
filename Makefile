@@ -20,7 +20,7 @@ SRC = $(SRC_DIR)/clean.c \
 OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -pthread #-g -gdwarf-4
+CFLAGS = -Wall -Wextra -Werror -pthread
 RM = @rm -rf
 AR = ar -rcs
 
